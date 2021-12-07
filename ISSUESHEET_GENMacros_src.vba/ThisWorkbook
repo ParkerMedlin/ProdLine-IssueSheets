@@ -1,0 +1,10 @@
+Private Sub Workbook_Open()
+'///This is what I want to happen when the workbook opens///////////////////////////////////////////////////////
+
+Dim src As String
+src = CurrentWorkbook.Name
+
+Workbooks.Open ("G:\Blending\02 Blending Issue Sheet\NOT_Blending_Issue_Sheet.xlsb")
+Workbooks.Open ("C:\OD\Kinpak, Inc\Blending - Documents\03 Projects\ProdLine-IssueSheets\ProdScheduleCopy.xlsb")
+
+End Sub

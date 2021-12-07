@@ -1,4 +1,3 @@
-
 Sub HotRoomSheet()
 '///Linked to the fire icon on the IssueSheetTable/////////////////////////////////////////////////////////////////////////
 '///Filters the IssueSheetTable Sheet to only include blends that need to be heated. Then prints the resulting sheet///////
