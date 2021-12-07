@@ -11,5 +11,5 @@
  - Added WorkbookOpen(), which does the following when ISSUESHEET_GEN.xlsb is opened:
 	 1.  open NOT_Blending_Issue_Sheet.xlsb
 	 2.  open ProdScheduleCopy.xlsb
-	 3.  activate INLINE sheet in prod schedule copy 
+	 3.  activate INLINE sheet in prod schedule copy
 
