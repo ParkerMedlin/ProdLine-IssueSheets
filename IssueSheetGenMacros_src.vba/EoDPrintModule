@@ -1,0 +1,50 @@
+Sub EoDPrint()
+'
+' EoDPrint Macro
+'
+
+'
+    Sheets("Horix Line").Select
+    ActiveWindow.SelectedSheets.PrintOut From:=1, To:=1, Copies:=1, Collate _
+        :=True, IgnorePrintAreas:=False
+    
+    Sheets("INLINE").Select
+    ActiveWindow.SelectedSheets.PrintOut From:=1, To:=1, Copies:=1, Collate _
+        :=True, IgnorePrintAreas:=False
+    
+    Sheets("BLISTER").Select
+    ActiveWindow.SelectedSheets.PrintOut From:=1, To:=1, Copies:=1, Collate _
+        :=True, IgnorePrintAreas:=False
+    
+    Sheets("PD LINE").Select
+    ActiveWindow.SelectedSheets.PrintOut From:=1, To:=1, Copies:=1, Collate _
+        :=True, IgnorePrintAreas:=False
+    
+    Sheets("JB LINE").Select
+    ActiveWindow.SelectedSheets.PrintOut From:=1, To:=1, Copies:=1, Collate _
+        :=True, IgnorePrintAreas:=False
+    
+    Sheets("OIL LINE").Select
+    ActiveWindow.SelectedSheets.PrintOut From:=1, To:=1, Copies:=1, Collate _
+        :=True, IgnorePrintAreas:=False
+    
+    Sheets("POUCH # 1").Select
+    ActiveWindow.SelectedSheets.PrintOut From:=1, To:=1, Copies:=1, Collate _
+        :=True, IgnorePrintAreas:=False
+    
+    Sheets("KITS").Select
+    ActiveWindow.SelectedSheets.PrintOut From:=1, To:=2, Copies:=1, Collate _
+        :=True, IgnorePrintAreas:=False
+End Sub
+
+Sub KeyTest()
+newHour = Hour(Now())
+newMinute = Minute(Now())
+newSecond = Second(Now()) + 2
+waitTime = TimeSerial(newHour, newMinute, newSecond)
+
+Application.SendKeys "%fp", True
+Application.Wait waitTime
+Application.SendKeys "%r", True
+
+End Sub

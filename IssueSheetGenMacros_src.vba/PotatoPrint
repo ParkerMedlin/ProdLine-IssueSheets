@@ -1,0 +1,146 @@
+
+
+
+Sub printIssueSchedule()
+'///Assigned to printer on IssueSheetTable/////////////////////////////////////////////////////////////////////////////////
+'///Formats the sheet and then prints it///////////////////////////////////////////////////////////////////////////////////
+    
+'declare int
+    Dim i As Integer
+    Dim numRows As Integer
+    
+'find numRows
+ '   ActiveSheet.ListObjects("issueSheetTable").DataBodyRange.SpecialCells(xlCellTypeVisible).Select
+ '   numRows = Selection.Rows.Count + 4
+    NextFree = Range("D2:D" & Rows.Count).Cells.SpecialCells(xlCellTypeBlanks).Row
+    Range("D" & NextFree).Select
+    numRows = Selection.Row + 1
+
+'insert row
+    Rows("1:1").Select
+    Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+    Dim theDate As Date
+    theDate = InputBox("Enter the date as MM/DD/YYYY")
+    Range("B1").Select
+    ActiveCell.FormulaR1C1 = "Runs for " & theDate
+    With Selection.Font
+        .Name = "Calibri"
+        .Size = 22
+        .Strikethrough = False
+        .Superscript = False
+        .Subscript = False
+        .OutlineFont = False
+        .Shadow = False
+        .Underline = xlUnderlineStyleNone
+        .ThemeColor = xlThemeColorLight1
+        .TintAndShade = 0
+        .ThemeFont = xlThemeFontMinor
+    End With
+
+'hide columns and select appropriate thing
+    Range("H:AB").Select
+    Selection.EntireColumn.Hidden = True
+    Range("A1:G" & numRows).Select
+
+    Dim numberOfCopies As Integer
+    numberOfCopies = Application.InputBox(Prompt:="How many copies?", Type:=1)
+
+'Print it however many times
+    For i = 1 To numberOfCopies
+    Selection.PrintOut
+    Next i
+
+'delete row
+    Rows("1:1").Select
+    Selection.Delete Shift:=xlUp
+
+'Unhide things
+    Range("H:I").Select
+    Selection.EntireColumn.Hidden = False
+
+    
+End Sub
+
+
+Sub printIssueSheets()
+'///Assigned to the print button on the PrintButton worksheet of each line's workbook//////////////////////////////////////
+'///Delete all unused sheets from the workbook/////////////////////////////////////////////////////////////////////////////
+
+'Turn off the warnings so that sheets can be deleted without interruption
+Application.DisplayAlerts = False
+
+'Start at the beginning
+Worksheets(1).Activate
+
+'Loop through all sheets and delete the ones that start with "Blending Issue Sheet"
+Dim i As Integer
+For i = 1 To (ActiveWorkbook.Worksheets.Count - 1)
+ActiveSheet.PrintOut
+Sheets(i + 1).Select
+Next i
+
+'Turn sheet delete warnings back on
+Application.DisplayAlerts = True
+
+End Sub
+
+Sub potatoPrinterChemstoCheck()
+'///Assigned to printer icon on chemstocheck sheet/////////////////////////////////////////////////////////////////////////
+'///Formats the sheet and then prints it for distribution to inventory crew////////////////////////////////////////////////
+
+'hide rows
+    Range("A:B").Select
+    Selection.EntireColumn.Hidden = True
+    
+'select visible data body
+    ActiveSheet.ListObjects("bom_ChemsToCheck_query").Range.SpecialCells(xlCellTypeVisible).Select
+    ActiveSheet.ListObjects("bom_ChemsToCheck_query").DataBodyRange.Select
+    
+'set row height
+    ActiveSheet.ListObjects("bom_ChemsToCheck_query").Range.RowHeight = 32
+    
+'remove duplicates
+    ActiveSheet.Range("bom_ChemsToCheck_query[#All]").RemoveDuplicates Columns:=3 _
+        , Header:=xlYes
+    
+'Insert row, write in Count and Now()
+    Rows("1:1").Select
+    Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+    Range("C1").Select
+    ActiveCell.FormulaR1C1 = "Count for " & Now() + 1 & " - In Order of Production Needs"
+    With Selection.Font
+        .Name = "Calibri"
+        .Size = 24
+        .Strikethrough = False
+        .Superscript = False
+        .Subscript = False
+        .OutlineFont = False
+        .Shadow = False
+        .Underline = xlUnderlineStyleNone
+        .ThemeColor = xlThemeColorLight1
+        .TintAndShade = 0
+        .ThemeFont = xlThemeFontMinor
+    End With
+    
+'print selection
+    copyNumber = InputBox("Number of Printed Copies")
+    If Not copyNumber = "" Then
+        ActiveWindow.SelectedSheets.PrintOut Copies:=copyNumber
+    End If
+    
+'delete the inserted date row
+    Rows("1:1").Select
+    Selection.Delete Shift:=xlUp
+          
+'show rows again and change row height back
+    Range("A:B").Select
+    Selection.EntireColumn.Hidden = False
+    ActiveSheet.ListObjects("bom_ChemsToCheck_query").Range.RowHeight = 21
+    Range("A1").Select
+    
+'refresh to restore order
+    Range("C2").Select
+    Selection.ListObject.QueryTable.Refresh BackgroundQuery:=False
+   
+End Sub
+
