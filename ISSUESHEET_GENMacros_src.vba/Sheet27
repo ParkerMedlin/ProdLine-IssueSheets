@@ -1,0 +1,8 @@
+Option Explicit
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+    If Selection.Count = 1 Then
+        If Not Intersect(Target, Range("$H:$H")) Is Nothing Then
+            Call IssueSheetGen
+        End If
+    End If
+End Sub
