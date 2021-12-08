@@ -1,8 +1,10 @@
 Private Sub Workbook_Open()
-'///This is what I want to happen when the workbook opens///////////////////////////////////////////////////////
+'///This is what I want to happen when the workbook opens/////////////////////////////////////////////////////////////
 
 Workbooks.Open ("G:\Blending\02 Blending Issue Sheet\NOT_Blending_Issue_Sheet.xlsb")
-Workbooks.Open ("C:\OD\Kinpak, Inc\Blending - Documents\03 Projects\ProdLine-IssueSheets\ProdScheduleCopy.xlsb")
-Sheets("INLINE").Activate
+
+If Dir("C:\OD\Kinpak, Inc\Blending - Documents\03 Projects\ProdLine-IssueSheets\ProdScheduleCopy.xlsb") <> "" Then
+    Workbooks.Open ("C:\OD\Kinpak, Inc\Blending - Documents\03 Projects\ProdLine-IssueSheets\ProdScheduleCopy.xlsb")
+End If
 
 End Sub
