@@ -1,0 +1,27 @@
+Sub RefreshAll()
+Dim uInput As Integer
+uInput = MsgBox("Proceed with Refresh?", vbQuestion + vbYesNo)
+
+    If uInput = vbYes Then
+        ActiveWorkbook.Connections("Query - prod_mergeSheets_createTable").Refresh
+        ActiveWorkbook.Connections("Query - blendQty_onHand").Refresh
+        ActiveWorkbook.Connections("Query - TimeTable").Refresh
+        ActiveWorkbook.Connections("Query - issueSheetTableQuery").Refresh
+        ActiveWorkbook.Connections("Query - BlendThese").Refresh
+
+    Else
+        MsgBox "Refresh cancelled."
+    
+    End If
+
+End Sub
+
+Sub RefreshBOMs()
+    ActiveWorkbook.Connections("bom.master").Refresh
+    ActiveWorkbook.Connections("Query - bom_Blend").Refresh
+    ActiveWorkbook.Connections("Query - bom_cap").Refresh
+    ActiveWorkbook.Connections("Query - bom master").Refresh
+    ActiveWorkbook.Connections("Query - bom_Blindsticker").Refresh
+    ActiveWorkbook.Connections("Query - bom_Pallet").Refresh
+    ActiveWorkbook.Connections("Query - bom_Bottle").Refresh
+End Sub

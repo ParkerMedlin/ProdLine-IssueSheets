@@ -1,5 +1,5 @@
 Sub createWorkbooks()
-'///Linked to H1 on issueSheetTable sheet///////////////////////////////////////////////////////////////////////////////////////////////
+'///Linked to H1 on issueSheet_TABLE sheet///////////////////////////////////////////////////////////////////////////////////////////////
 '///Loops through the list and triggers IssueSheetGen at each row///////////////////////////////////////////////////////////////////////
 
 
@@ -29,7 +29,7 @@ Sub createWorkbooks()
         
         'Remove duplicates from the list
         Range("issueSheet_TABLE[uniqchek]").Select
-        ActiveSheet.Range("issueSheetTable[#All]").RemoveDuplicates Columns:=15, _
+        ActiveSheet.Range("issueSheet_TABLE[#All]").RemoveDuplicates Columns:=15, _
             Header:=xlYes
     
         'Declare variables
@@ -37,7 +37,7 @@ Sub createWorkbooks()
         Dim i As Integer
    
         'Set the number of total iterations to the number of rows in the issue sheet table
-        ActiveSheet.ListObjects("issueSheetTable").DataBodyRange.SpecialCells(xlCellTypeVisible).Select
+        ActiveSheet.ListObjects("issueSheet_TABLE").DataBodyRange.SpecialCells(xlCellTypeVisible).Select
         numberOfRows = Selection.Rows.Count
         Range("H2").Select
     
@@ -81,7 +81,7 @@ Sub createWorkbooks()
 End Sub
 
 Sub IssueSheetGen()
-'///Linked to H:H on issueSheetTable sheet//////////////////////////////////////////////////////////////////////////////////////////////
+'///Linked to H:H on issueSheet_TABLE sheet//////////////////////////////////////////////////////////////////////////////////////////////
 '///Generates an issue sheet for the blend PN of the row that is clicked////////////////////////////////////////////////////////////////
 
     'Set the way back to the current workbook
@@ -270,4 +270,6 @@ Sub saveNewIssueSheets()
     
     
 End Sub
-\
+
+
+
