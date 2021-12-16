@@ -1,5 +1,9 @@
 # Update Notes 
 
+### 12-16-2021
+ - simplified the issue sheet generating loop and its sub functions.
+	 - moved the batch number SQL query from the issue sheet template workbook over to the ISSUESHEET_GEN workbook to avoid potential issue of batch formulas failing to calculate before the code executes.
+
 ### 12-8-2021
  - resolved the "Range method of object _Global has failed" issue. Problem was that I was trying to select a table row using the old table name (I updated the table name yesterday to match naming convention of all other tables).
  - added `if` statement in the ThisWorkbook module of ISSUESHEET_GEN workbook to make sure Open_Workbook() isn't looking for ProdScheduleCopy.xlsb when it's not there. 

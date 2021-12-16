@@ -14,6 +14,10 @@ Sub Delay(Finish As Long)
 End Sub
 
 Sub EoDPrint()
+    
+    ' Refresh schedule
+    Call RefreshAll
+    
     Sheets("Horix Line").Select
     ActiveWindow.SelectedSheets.PrintOut From:=1, To:=1, Copies:=1, Collate _
         :=True, IgnorePrintAreas:=False
@@ -67,4 +71,9 @@ Sub EoDPrint()
     Application.SendKeys "%k", True
     Application.SendKeys "{LEFT}~", True
     Application.SendKeys "{ESC}", True
+
+    Delay (2)
+    
+    ActiveWorkbook.Close True
+
 End Sub

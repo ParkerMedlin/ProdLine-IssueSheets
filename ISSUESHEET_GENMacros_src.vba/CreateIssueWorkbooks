@@ -12,10 +12,6 @@ Sub createWorkbooks()
         'turn the macros off
         Call macrosOff
         
-        'Set the way back to the current workbook
-        Dim src As String
-        src = ActiveWorkbook.Name
-
         'Get the date and put it into NOT the Blending Issue Sheet
         Dim issueDate As Date
         issueDate = InputBox("Enter the date as MM/DD/YYYY")
@@ -25,9 +21,8 @@ Sub createWorkbooks()
         Sheets(1).Activate
         Range("D4").Value = issueDate
 
-        Windows(src).Activate
-        
         'Remove duplicates from the list
+        Windows("ISSUESHEET_GEN.xlsb").Activate
         Range("issueSheet_TABLE[uniqchek]").Select
         ActiveSheet.Range("issueSheet_TABLE[#All]").RemoveDuplicates Columns:=15, _
             Header:=xlYes
@@ -39,12 +34,14 @@ Sub createWorkbooks()
         'Set the number of total iterations to the number of rows in the issue sheet table
         ActiveSheet.ListObjects("issueSheet_TABLE").DataBodyRange.SpecialCells(xlCellTypeVisible).Select
         numberOfRows = Selection.Rows.Count
+
         Range("H2").Select
     
         'The For loop
         For i = 1 To numberOfRows
         Call IssueSheetGen
-        Selection.Offset(1, -1).Select
+        Windows("ISSUESHEET_GEN.xlsb").Activate
+        Selection.Offset(1, 0).Select
         Next i
     
         'Print and save issue sheets
@@ -81,12 +78,10 @@ Sub createWorkbooks()
 End Sub
 
 Sub IssueSheetGen()
-'///Linked to H:H on issueSheet_TABLE sheet//////////////////////////////////////////////////////////////////////////////////////////////
-'///Generates an issue sheet for the blend PN of the row that is clicked////////////////////////////////////////////////////////////////
+'///tink beep tink tink////////////////////////////////////////////////////////////////
 
     'Set the way back to the current workbook
-    Dim src As String
-    src = ActiveWorkbook.Name
+    Dim sheetInfo(15) As Variant
 
     'Open the blend issue sheet
     Application.ScreenUpdating = True
@@ -94,120 +89,91 @@ Sub IssueSheetGen()
     Application.ScreenUpdating = False
     Sheets(1).Activate
     
-    'Go back to the original workbook (Blending Schedule) and copy the production line name
-    Windows(src).Activate
-        ActiveCell.Offset(0, -2).Select
-        Selection.Copy
-        
-    'Go to blend issue sheet workbook and paste the production line name
-    Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
-        Range("$D$6").Select
-        Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
-        :=False, Transpose:=False
-
-    'Go to the original workbook (Blending Schedule) and copy the blend desc
-    Windows(src).Activate
-        ActiveCell.Offset(0, -3).Select
-        Application.CutCopyMode = False
-        Selection.Copy
-        
-    'Go to blend issue sheet workbook and paste the blend desc
-    Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
-        Range("$D$8").Select
-        Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
-            :=False, Transpose:=False
-            
-    'Copy the Blend Issue Sheet worksheet to the appropriate Line worksheet
-    Call workSheetCopy
+    'Set up all them array values
+    Windows("ISSUESHEET_GEN.xlsb").Activate
+    sheetInfo(0) = ActiveCell.Offset(0, -6).Value   'Blend PN
+    sheetInfo(1) = ActiveCell.Offset(0, -5).Value   'Blend Description
+    sheetInfo(2) = ActiveCell.Offset(0, -2).Value   'Line name
+    sheetInfo(3) = ActiveCell.Offset(0, 8).Value    'Lot Num 1
+    sheetInfo(4) = ActiveCell.Offset(0, 9).Value    'Lot Num 1 Qty
+    sheetInfo(5) = ActiveCell.Offset(0, 10).Value   'Lot Num 2
+    sheetInfo(6) = ActiveCell.Offset(0, 11).Value   'Lot Num 2 Qty
+    sheetInfo(7) = ActiveCell.Offset(0, 12).Value   'Lot Num 3
+    sheetInfo(8) = ActiveCell.Offset(0, 13).Value   'Lot Num 3 Qty
+    sheetInfo(9) = ActiveCell.Offset(0, 14).Value   'Lot Num 4
+    sheetInfo(10) = ActiveCell.Offset(0, 15).Value  'Lot Num 4 Qty
+    sheetInfo(11) = ActiveCell.Offset(0, 16).Value  'Lot Num 5
+    sheetInfo(12) = ActiveCell.Offset(0, 17).Value  'Lot Num 5 Qty
+    sheetInfo(13) = ActiveCell.Offset(0, 18).Value  'Lot Num 6
+    sheetInfo(14) = ActiveCell.Offset(0, 19).Value  'Lot Num 6 Qty
     
-    'mark x for done
-    Windows(src).Activate
-        ActiveCell.Offset(0, 6).Select
-        Selection.Value = "x"
- 
-End Sub
+    'Put all that stuff in the issue sheet
+    Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
+           
 
+    Range("B8").Value = sheetInfo(0)    'Blend PN
+    Range("D8").Value = sheetInfo(1)    'Blend Description
+    Range("D6").Value = sheetInfo(2)    'Line name
+    Range("B10").Value = sheetInfo(3)   'Lot Num 1
+    Range("B12").Value = sheetInfo(4)   'Lot Num 1 Qty
+    Range("D10").Value = sheetInfo(5)   'Lot Num 2
+    Range("D12").Value = sheetInfo(6)   'Lot Num 2 Qty
+    Range("F10").Value = sheetInfo(7)   'Lot Num 3
+    Range("F12").Value = sheetInfo(8)   'Lot Num 3 Qty
+    Range("B25").Value = sheetInfo(9)   'Lot Num 4
+    Range("B27").Value = sheetInfo(10)  'Lot Num 4 Qty
+    Range("D25").Value = sheetInfo(11)  'Lot Num 5
+    Range("D27").Value = sheetInfo(12)  'Lot Num 5 Qty
+    Range("F25").Value = sheetInfo(13)  'Lot Num 6
+    Range("F27").Value = sheetInfo(14)  'Lot Num 6 Qty
 
-Sub workSheetCopy()
-'///Copies the issue sheets to the appropriate issue sheet template depending on which line it is///////////////////////////////////////
-
-    'SET THE PATH BACK, MY LAD
-    Dim src As String
-    src = "NOT_Blending_Issue_Sheet.xlsb"
     Dim SheetCount As Integer
-    Dim BlendName As String
-    BlendName = Range("B8").Value
-    Dim dest As String
+    Dim BlendPN As String
+    Dim printPath As String
 
-    'Declare the path for the workbook I'm copying all the Inline issue sheets to
-    Dim InlinePath As String
-    InlinePath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\01 Inline Issue Sheets.xlsb"
-
-    'Declare the path for the workbook I'm copying all the PDline issue sheets to
-    Dim PDlinePath As String
-    PDlinePath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\02 PDline Issue Sheets.xlsb"
-
-    'Declare the path for the workbook I'm copying all the JBline issue sheets to
-    Dim JBlinePath As String
-    JBlinePath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\03 JBline Issue Sheets.xlsb"
+    BlendPN = Range("B8").Value
 
     'Select the appropriate workbook and copy the issue sheet to it
     If Range("D6").Value = "Inline" Then
-        Workbooks.Open (InlinePath)
+        printPath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\01 Inline Issue Sheets.xlsb"
+        Workbooks.Open (printPath)
         SheetCount = Application.Sheets.Count
-        Windows(src).Activate
-        Sheets("Blending Issue Sheet").Select
-        Sheets("Blending Issue Sheet").Copy Before:=Workbooks( _
+        Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
+        Sheets(1).Select
+        Sheets(1).Copy Before:=Workbooks( _
         "01 Inline Issue Sheets.xlsb").Sheets(SheetCount)
         Windows("01 Inline Issue Sheets.xlsb").Activate
-        ActiveSheet.Name = BlendName
-        Call copyBatchNumberValues
+        ActiveSheet.Name = BlendPN
+        'Call copyBatchNumberValues
 
     ElseIf Range("D6").Value = "PDLine" Then
-        Workbooks.Open (PDlinePath)
+        printPath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\02 PDline Issue Sheets.xlsb"
+        Workbooks.Open (printPath)
         SheetCount = Application.Sheets.Count
-        Windows(src).Activate
-        Sheets("Blending Issue Sheet").Select
-        Sheets("Blending Issue Sheet").Copy Before:=Workbooks( _
+        Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
+        Sheets(1).Select
+        Sheets(1).Copy Before:=Workbooks( _
         "02 PDline Issue Sheets.xlsb").Sheets(SheetCount)
         Windows("02 PDline Issue Sheets.xlsb").Activate
-582        ActiveSheet.Name = BlendName
-        Call copyBatchNumberValues
+582        ActiveSheet.Name = BlendPN
+        'Call copyBatchNumberValues
 
     ElseIf Range("D6").Value = "JBLine" Then
-        Workbooks.Open (JBlinePath)
+        printPath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\03 JBline Issue Sheets.xlsb"
+        Workbooks.Open (printPath)
         SheetCount = Application.Sheets.Count
-        Windows(src).Activate
-        Sheets("Blending Issue Sheet").Select
-        Sheets("Blending Issue Sheet").Copy Before:=Workbooks( _
+        Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
+        Sheets(1).Select
+        Sheets(1).Copy Before:=Workbooks( _
         "03 JBline Issue Sheets.xlsb").Sheets(SheetCount)
         Windows("03 JBline Issue Sheets.xlsb").Activate
-        ActiveSheet.Name = BlendName
-        Call copyBatchNumberValues
+        ActiveSheet.Name = BlendPN
+        'Call copyBatchNumberValues
     
     End If
 
+    Workbooks("ISSUESHEET_GEN.xlsb").Activate
 
-End Sub
-
-
-Sub copyBatchNumberValues()
-'///Copies the batch numbers and pastes them as values in the appropriate slots in the new sheet////////////////////////////////////////
-
-    Dim dest As String
-    lineIssueShtWorkbook = ActiveWorkbook.Name
-    
-    Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
-    Range("A4:F27").Select
-    Selection.Copy
-    Windows(lineIssueShtWorkbook).Activate
-    Range("A4").Select
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
-      :=False, Transpose:=False
-    Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
-    
-    Application.CutCopyMode = False
-    
 End Sub
 
 
@@ -221,11 +187,10 @@ Sub saveNewIssueSheets()
     Dim foldrpath As String
     Dim dateStr As String
     
-    dateStr = Format(Date + 1, "mm-dd-yyyy")
-
+    dateStr = Workbooks("NOT_Blending_Issue_Sheet.xlsb").Sheet1.Range("D4").Value
+    
     'Create folder in OneDrive\Blending\DatedIssueSheets
     foldrpath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\IssueSheetArchive\"
-
     foldrpath = foldrpath & dateStr & " Issue Sheets"
     MsgBox foldrpath
     MkDir foldrpath
@@ -270,6 +235,8 @@ Sub saveNewIssueSheets()
     
     
 End Sub
+
+
 
 
 
