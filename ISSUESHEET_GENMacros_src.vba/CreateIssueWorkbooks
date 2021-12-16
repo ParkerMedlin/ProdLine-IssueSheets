@@ -187,8 +187,10 @@ Sub saveNewIssueSheets()
     Dim foldrpath As String
     Dim dateStr As String
     
-    dateStr = Workbooks("NOT_Blending_Issue_Sheet.xlsb").Sheet1.Range("D4").Value
-    
+    Workbooks("NOT_Blending_Issue_Sheet.xlsb").Activate
+    dateStr = Sheets(1).Range("D4").Value
+    dateStr = Replace(dateStr, "/", "-")
+        
     'Create folder in OneDrive\Blending\DatedIssueSheets
     foldrpath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\IssueSheetArchive\"
     foldrpath = foldrpath & dateStr & " Issue Sheets"

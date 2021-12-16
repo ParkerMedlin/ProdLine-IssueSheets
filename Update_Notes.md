@@ -1,7 +1,7 @@
 # Update Notes 
 
 ### 12-16-2021
- - simplified the issue sheet generating loop and its sub functions.
+ - simplified and cleaned up the issue sheet generating loop and its sub functions. removed a couple functions that didn't need to be separate. 
 	 - moved the batch number SQL query from the issue sheet template workbook over to the ISSUESHEET_GEN workbook to avoid potential issue of batch formulas failing to calculate before the code executes.
 
 ### 12-8-2021
