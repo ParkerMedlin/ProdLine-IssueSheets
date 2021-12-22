@@ -7,8 +7,6 @@ Sub printIssueSchedule()
     Dim numRows As Integer
     
 'find numRows
- '   ActiveSheet.ListObjects("issueSheetTable").DataBodyRange.SpecialCells(xlCellTypeVisible).Select
- '   numRows = Selection.Rows.Count + 4
     NextFree = Range("D2:D" & Rows.Count).Cells.SpecialCells(xlCellTypeBlanks).Row
     Range("D" & NextFree).Select
     numRows = Selection.Row + 1

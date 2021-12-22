@@ -1,3 +1,5 @@
+@echo off
+
 cd C:\OD\Kinpak, Inc\Production - Documents\Production Schedule
 
 copy "Starbrite KPK production schedule.xlsb" "C:\OD\Kinpak, Inc\Blending - Documents\03 Projects\ProdLine-IssueSheets\"
