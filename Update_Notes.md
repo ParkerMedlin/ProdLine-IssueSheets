@@ -1,5 +1,8 @@
 # Update Notes 
 
+### 12-22-2021
+ - Started playing with the option of auto staple printing but it's going to take a lot of work because printer will not staple different worksheets together. 
+
 ### 12-21-2021 
  - Removed some unnecessary variables from the CreateIssueSheetWorkbooks subroutine
 

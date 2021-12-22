@@ -130,13 +130,13 @@ Sub IssueSheetGen()
     Select Case Range("D6").Value
       
     Case "Inline"
-        Workbooks.Open ("C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\01 Inline Issue Sheets.xlsb")
+        Workbooks.Open ("C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\02 Inline Issue Sheets.xlsb")
         SheetCount = Application.Sheets.Count
         Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
         Sheets(1).Select
         Sheets(1).Copy Before:=Workbooks( _
-        "01 Inline Issue Sheets.xlsb").Sheets(SheetCount)
-        Windows("01 Inline Issue Sheets.xlsb").Activate
+        "02 Inline Issue Sheets.xlsb").Sheets(SheetCount)
+        Windows("02 Inline Issue Sheets.xlsb").Activate
         ActiveSheet.Name = sheetInfo(0)
 
     Case "PDLine"

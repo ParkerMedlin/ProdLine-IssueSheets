@@ -1,3 +1,66 @@
+Public Declare PtrSafe Function GetTickCount Lib "kernel32.dll" () As Long
+
+Sub Delay(Finish As Long)
+    Dim NowTick As Long
+    Dim EndTick As Long
+    
+    EndTick = GetTickCount + (Finish * 1000)
+    
+    Do
+        NowTick = GetTickCount
+        DoEvents
+    
+    Loop Until NowTick >= EndTick
+End Sub
+
+
+Sub printWithStaples()
+    
+    'Call refreshEmAll  'Refresh schedule
+    'Delay (4)
+    
+    Application.SendKeys "%fp", True 'print then open printer select dropdown
+    Delay (1)
+    Application.SendKeys "%i", True
+    Delay (3)
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}", True
+    Application.SendKeys "{DOWN}~", True
+    Delay (3)
+    'select Print Entire Workbook
+    'Application.SendKeys "{TAB}", True
+    'Application.SendKeys "{TAB}~", True
+    'Application.SendKeys "{DOWN}~", True
+    Delay (3)
+    'select One Staple Top Left
+    Application.SendKeys "{TAB}", True
+    Application.SendKeys "{TAB}", True
+    Application.SendKeys "{TAB}", True
+    Application.SendKeys "{TAB}", True
+    Application.SendKeys "{TAB}~", True
+    Application.SendKeys "{UP}~", True
+    
+    'do something else. i can't remember
+    Application.SendKeys "{TAB}", True
+    Application.SendKeys "{TAB}~"
+    Application.SendKeys "{DOWN}~", True
+
+    Delay (3)
+    Application.SendKeys "%pp", True
+
+End Sub
+
+
+
 Sub printIssueSchedule()
 '///Assigned to printer on IssueSheetTable/////////////////////////////////////////////////////////////////////////////////
 '///Formats the sheet and then prints it///////////////////////////////////////////////////////////////////////////////////
@@ -78,3 +141,5 @@ Next i
 Application.DisplayAlerts = True
 
 End Sub
+
+
