@@ -1,3 +1,8 @@
+Public numberOfRows As Integer
+Public pasteRowINLine As Integer
+Public pasteRowPDLine As Integer
+Public pasteRowJBLine As Integer
+
 Sub createWorkbooks()
 '///Linked to the 1's and 0's icon on issueSheet_TABLE sheet////////////////////////////////////////////////////////////////////////////
 '///Loops through the list and triggers IssueSheetGen at each row///////////////////////////////////////////////////////////////////////
@@ -15,40 +20,53 @@ Sub createWorkbooks()
         issueDate = InputBox("Enter the date as MM/DD/YYYY")
         Application.ScreenUpdating = True
         Workbooks("NOT_Blending_Issue_Sheet.xlsb").Activate
-        Application.ScreenUpdating = False
         Sheets(1).Activate
-        Range("D4").Value = issueDate
+        Range("D4") = issueDate
+        Application.ScreenUpdating = False
 
         'Remove duplicates from the list
         Windows("ISSUESHEET_GEN.xlsb").Activate
         Range("issueSheet_TABLE[uniqchek]").Select
         ActiveSheet.Range("issueSheet_TABLE[#All]").RemoveDuplicates Columns:=15, _
             Header:=xlYes
-    
-        'Declare variables
-        Dim numberOfRows As Integer
-        Dim i As Integer
-   
+       
         'Set the number of total iterations to the number of rows in the issue sheet table
         ActiveSheet.ListObjects("issueSheet_TABLE").DataBodyRange.SpecialCells(xlCellTypeVisible).Select
         numberOfRows = Selection.Rows.Count
 
         Range("H2").Select
     
+        pasteRowINLine = 42
+        pasteRowPDLine = 42
+        pasteRowJBLine = 42
         'The For loop
         For i = 1 To numberOfRows
         Call IssueSheetGen
-        Windows("ISSUESHEET_GEN.xlsb").Activate
         Selection.Offset(1, 0).Select
         Next i
-    
+        
         'Print and save issue sheets
-        Call saveNewIssueSheets
-    
+        Dim foldrPath As String
+        Workbooks("NOT_Blending_Issue_Sheet.xlsb").Activate
+        Application.DisplayAlerts = False
+        Sheets(1).Delete
+        Sheets(1).Rows("1:41").EntireRow.Delete
+        Sheets(2).Rows("1:41").EntireRow.Delete
+        Sheets(3).Rows("1:41").EntireRow.Delete
+        Application.DisplayAlerts = True
+        
+        'Create folder in OneDrive
+        Dim betterIssueDate As String
+        betterIssueDate = Replace(issueDate, "/", "-")
+        foldrPath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\IssueSheetArchive\" & betterIssueDate & " Issue Sheets"
+        MkDir foldrPath
+        ActiveWorkbook.SaveCopyAs foldrPath & "\" & betterIssueDate & " Issue Sheets.xlsb"
+        
         'Close the template
         Workbooks("NOT_Blending_Issue_Sheet.xlsb").Close SaveChanges:=False
-    
+       
         'Refresh and restore order
+        Windows("ISSUESHEET_GEN.xlsb").Activate
         Call refreshIssueSheet
 
         'turn the macros on
@@ -62,14 +80,15 @@ Sub createWorkbooks()
         If uInput3 = vbYes Then
             Call printIssueSchedule
         Else
-        MsgBox "Print cancelled."
+            MsgBox "Print cancelled."
         End If
    
+        'Open the workbook and print it with staples
+        Workbooks.Open foldrPath & "\" & betterIssueDate & " Issue Sheets.xlsb"
+        
     Else
     
         MsgBox "Looper cancelled."
-        
-    
     
     End If
 
@@ -81,12 +100,6 @@ Sub IssueSheetGen()
     'Set the way back to the current workbook
     Dim sheetInfo(15) As Variant
 
-    'Open the blend issue sheet
-    Application.ScreenUpdating = True
-    Workbooks("NOT_Blending_Issue_Sheet.xlsb").Activate
-    Application.ScreenUpdating = False
-    Sheets(1).Activate
-    
     'Set up all them array values
     Windows("ISSUESHEET_GEN.xlsb").Activate
     sheetInfo(0) = ActiveCell.Offset(0, -6).Value   'Blend PN
@@ -105,7 +118,7 @@ Sub IssueSheetGen()
     sheetInfo(13) = ActiveCell.Offset(0, 18).Value  'Lot Num 6
     sheetInfo(14) = ActiveCell.Offset(0, 19).Value  'Lot Num 6 Qty
     
-    'Put all that stuff in the issue sheet
+    'Put all that stuff into Sheet 1, which is the template
     Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
 
     Range("B8").Value = sheetInfo(0)
@@ -123,110 +136,33 @@ Sub IssueSheetGen()
     Range("D27").Value = sheetInfo(12)
     Range("F25").Value = sheetInfo(13)
     Range("F27").Value = sheetInfo(14)
-
-    Dim SheetCount As Integer
     
-    'Select the appropriate workbook and copy the issue sheet to it
-    Select Case Range("D6").Value
-      
-    Case "Inline"
-        Workbooks.Open ("C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\02 Inline Issue Sheets.xlsb")
-        SheetCount = Application.Sheets.Count
-        Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
-        Sheets(1).Select
-        Sheets(1).Copy Before:=Workbooks( _
-        "02 Inline Issue Sheets.xlsb").Sheets(SheetCount)
-        Windows("02 Inline Issue Sheets.xlsb").Activate
-        ActiveSheet.Name = sheetInfo(0)
-
-    Case "PDLine"
-        Workbooks.Open ("C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\02 PDline Issue Sheets.xlsb")
-        SheetCount = Application.Sheets.Count
-        Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
-        Sheets(1).Select
-        Sheets(1).Copy Before:=Workbooks( _
-        "02 PDline Issue Sheets.xlsb").Sheets(SheetCount)
-        Windows("02 PDline Issue Sheets.xlsb").Activate
-        ActiveSheet.Name = sheetInfo(0)
-
-    Case "JBLine"
-        Workbooks.Open ("C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\PrintToSheet\03 JBline Issue Sheets.xlsb")
-        SheetCount = Application.Sheets.Count
-        Windows("NOT_Blending_Issue_Sheet.xlsb").Activate
-        Sheets(1).Select
-        Sheets(1).Copy Before:=Workbooks( _
-        "03 JBline Issue Sheets.xlsb").Sheets(SheetCount)
-        Windows("03 JBline Issue Sheets.xlsb").Activate
-        ActiveSheet.Name = sheetInfo(0)
+    Select Case sheetInfo(2)
+    
+        Case "Inline"
+            Range("A1:F41").Copy ActiveWorkbook.Sheets(2).Range("A" & pasteRowINLine)
+            pasteRowINLine = pasteRowINLine + 40
+            
+        Case "PDLine"
+            Range("A1:F41").Copy ActiveWorkbook.Sheets(3).Range("A" & pasteRowPDLine)
+            pasteRowPDLine = pasteRowPDLine + 40
+            
+        Case "JBLine"
+            Range("A1:F41").Copy ActiveWorkbook.Sheets(4).Range("A" & pasteRowJBLine)
+            pasteRowJBLine = pasteRowJBLine + 40
     
     End Select
-
+    
     Workbooks("ISSUESHEET_GEN.xlsb").Activate
 
 End Sub
 
+Sub singleRowIssueSheet()
 
-Sub saveNewIssueSheets()
-'///Save a copy of each issue sheet and rename them appropriately///////////////////////////////////////////////////////////////////////
+    numberOfRows = 1
+    Call IssueSheetGen
 
-    'declare variables for each filename
-    Dim INpath As String
-    Dim PDpath As String
-    Dim JBpath As String
-    Dim foldrpath As String
-    Dim dateStr As String
-    
-    Workbooks("NOT_Blending_Issue_Sheet.xlsb").Activate
-    dateStr = Sheets(1).Range("D4").Value
-    dateStr = Replace(dateStr, "/", "-")
-        
-    'Create folder in OneDrive\Blending\DatedIssueSheets
-    foldrpath = "C:\OD\Kinpak, Inc\Blending - Documents\01 Spreadsheet Tools\Blending Issue Sheet\IssueSheetArchive\"
-    foldrpath = foldrpath & dateStr & " Issue Sheets"
-    MsgBox foldrpath
-    MkDir foldrpath
-    
-    'Open and save copy of each set of sheets to a new workbook, then clear the template:
-    INpath = foldrpath & "\" & dateStr & " Inline Issue Sheets.xlsb"
-    Windows("01 Inline Issue Sheets.xlsb").Activate
-    ActiveWorkbook.SaveCopyAs INpath
-    Dim uInput As Integer
-    uInput = MsgBox("Print Issue Sheets?", vbQuestion + vbYesNo)
-        If uInput = vbYes Then
-            Call printIssueSheets
-            Call printIssueSheets
-        Else
-        MsgBox "Print cancelled."
-        End If
-    Workbooks("01 Inline Issue Sheets.xlsb").Close SaveChanges:=False
-    
-    PDpath = foldrpath & "\" & dateStr & " PDline Issue Sheets.xlsb"
-    Windows("02 PDline Issue Sheets.xlsb").Activate
-    ActiveWorkbook.SaveCopyAs PDpath
-    uInput = MsgBox("Print Issue Sheets?", vbQuestion + vbYesNo)
-        If uInput = vbYes Then
-            Call printIssueSheets
-            Call printIssueSheets
-        Else
-        MsgBox "Print cancelled."
-        End If
-    Workbooks("02 PDline Issue Sheets.xlsb").Close SaveChanges:=False
-
-    JBpath = foldrpath & "\" & dateStr & " JBline Issue Sheets.xlsb"
-    Windows("03 JBline Issue Sheets.xlsb").Activate
-    ActiveWorkbook.SaveCopyAs JBpath
-    uInput = MsgBox("Print Issue Sheets?", vbQuestion + vbYesNo)
-        If uInput = vbYes Then
-            Call printIssueSheets
-            Call printIssueSheets
-        Else
-        MsgBox "Print cancelled."
-        End If
-    Workbooks("03 JBline Issue Sheets.xlsb").Close SaveChanges:=False
-    
-    
 End Sub
-
 
 
 

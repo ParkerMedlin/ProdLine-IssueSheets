@@ -1,5 +1,10 @@
 # Update Notes 
 
+### 1-3-2022
+ - Big ole update drastically decreasing the amount of code needed to generate the issue sheets 
+ - Eventual goal is to completely automate the staple printing but for now printing will be manual. 
+ - createIssueWorkbooks now just copies each set of issue sheets into a different tab and it ends with opening the new workbook
+
 ### 12-22-2021
  - Started playing with the option of auto staple printing but it's going to take a lot of work because printer will not staple different worksheets together. 
 

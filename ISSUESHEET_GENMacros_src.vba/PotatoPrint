@@ -21,7 +21,7 @@ Sub printWithStaples()
     
     Application.SendKeys "%fp", True 'print then open printer select dropdown
     Delay (1)
-    Application.SendKeys "%i", True
+    Application.SendKeys "i", True
     Delay (3)
     Application.SendKeys "{DOWN}", True
     Application.SendKeys "{DOWN}", True
@@ -37,9 +37,9 @@ Sub printWithStaples()
     Application.SendKeys "{DOWN}~", True
     Delay (3)
     'select Print Entire Workbook
-    'Application.SendKeys "{TAB}", True
-    'Application.SendKeys "{TAB}~", True
-    'Application.SendKeys "{DOWN}~", True
+    Application.SendKeys "{TAB}", True
+    Application.SendKeys "{TAB}~", True
+    Application.SendKeys "{DOWN}~", True
     Delay (3)
     'select One Staple Top Left
     Application.SendKeys "{TAB}", True
@@ -47,11 +47,6 @@ Sub printWithStaples()
     Application.SendKeys "{TAB}", True
     Application.SendKeys "{TAB}", True
     Application.SendKeys "{TAB}~", True
-    Application.SendKeys "{UP}~", True
-    
-    'do something else. i can't remember
-    Application.SendKeys "{TAB}", True
-    Application.SendKeys "{TAB}~"
     Application.SendKeys "{DOWN}~", True
 
     Delay (3)
