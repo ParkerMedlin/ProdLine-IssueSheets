@@ -59,7 +59,30 @@ Sub TrayPackOptions1()
     Selection.Offset(1, 0).Resize(Selection.Rows.Count, _
         Selection.Columns.Count + 3).Select
     Selection.Interior.Color = RGB(183, 222, 232)
-    
+
+' Enter N/A into Printed cell
+    Selection.Offset(0, -1).Resize(Selection.Rows.Count, _
+        Selection.Columns.Count - 4).Select
+    With Selection
+        With .Font
+            .Bold = True
+            .Size = 13.5
+        End With
+        .Interior.Color = RGB(255, 255, 255)
+        .Value = "CL"
+    End With
+
+' Enter CL into Printed cell for kit items
+    Selection.Offset(-1, 0).Select
+    With Selection
+        With .Font
+            .Bold = True
+            .Size = 13.5
+        End With
+        .Interior.Color = RGB(255, 255, 255)
+        .Value = "N/A"
+    End With
+
 End Sub
 
 Sub TrayPackOptions2()
@@ -69,12 +92,36 @@ Sub TrayPackOptions2()
     Dim itemTwo As String
     Dim packSize As Integer
     
+' Setup color for formatting later
+    Dim fillChoice As String
+    Dim fillOrange, fillGreen, fillRed As String
+        fillOrange = RGB(252, 213, 180)
+        fillRed = RGB(230, 184, 183)
+        fillGreen = RGB(216, 228, 188)
+
+
 ' Open text inputs for each item
     itemOne = Application.InputBox("Item 1 Part Number")
     itemTwo = Application.InputBox("Item 2 Part Number")
 
 ' Storing # of bottles
     packSize = Application.InputBox("Case Size #")
+
+
+' Storing color
+    fillChoice = Application.InputBox("Enter color" & _
+        vbCrLf & vbTab & "1 - Orange" & _
+        vbCrLf & vbTab & "2 - Red" & _
+        vbCrLf & vbTab & "3 - Green", "Color Choice")
+
+    Select Case fillChoice
+        Case "1"
+            fillChoice = fillOrange
+        Case "2"
+            fillChoice = fillRed
+        Case "3"
+            fillChoice = fillGreen
+    End Select
     
 ' Copy single row
     With ActiveCell.EntireRow
@@ -184,8 +231,44 @@ EndTry2:
         .Copy
         .PasteSpecial Paste:=xlPasteValues
     End With
+
+' Change fill color to fillChoice color and bold text
+    ActiveCell.Offset(-1, -5).Select
+    Selection.Resize(Selection.Rows.Count + 1, _
+        Selection.Columns.Count + 1).Select
+    With Selection
+        .Font.Bold = True
+        .Interior.Color = fillChoice
+    End With
+
+' Move down one row, extend range, change to fillChoice color
+    Selection.Offset(2, 0).Resize(Selection.Rows.Count - 1, _
+        Selection.Columns.Count + 3).Select
+    Selection.Interior.Color = fillChoice
     
-    
+' Enter N/A into Printed cell
+    Selection.Offset(0, -1).Resize(Selection.Rows.Count, _
+        Selection.Columns.Count - 4).Select
+    With Selection
+        With .Font
+            .Bold = True
+            .Size = 13.5
+        End With
+        .Interior.Color = RGB(255, 255, 255)
+        .Value = "CL"
+    End With
+
+' Enter CL into Printed cell for kit items
+    Selection.Offset(-2, 0).Resize(Selection.Rows.Count + 1, Selection.Columns.Count).Select
+    With Selection
+        With .Font
+            .Bold = True
+            .Size = 13.5
+        End With
+        .Interior.Color = RGB(255, 255, 255)
+        .Value = "N/A"
+    End With
+
 End Sub
 
 Sub TrayPackOptions3()
@@ -196,6 +279,13 @@ Sub TrayPackOptions3()
     Dim itemThree As String
     Dim packSize As Integer
     
+' Setup color for formatting later
+    Dim fillChoice As String
+    Dim fillOrange, fillGreen, fillRed As String
+        fillOrange = RGB(252, 213, 180)
+        fillRed = RGB(230, 184, 183)
+        fillGreen = RGB(216, 228, 188)
+
 ' Open text inputs for each item
     itemOne = Application.InputBox("Item 1 Part Number")
     itemTwo = Application.InputBox("Item 2 Part Number")
@@ -203,6 +293,21 @@ Sub TrayPackOptions3()
 
 ' Storing # of bottles
     packSize = Application.InputBox("Case Size #")
+    
+' Storing color
+    fillChoice = Application.InputBox("Enter color" & _
+        vbCrLf & vbTab & "1 - Orange" & _
+        vbCrLf & vbTab & "2 - Red" & _
+        vbCrLf & vbTab & "3 - Green", "Color Choice")
+
+    Select Case fillChoice
+        Case "1"
+            fillChoice = fillOrange
+        Case "2"
+            fillChoice = fillRed
+        Case "3"
+            fillChoice = fillGreen
+    End Select
     
 ' Copy single row
     With ActiveCell.EntireRow
@@ -363,5 +468,42 @@ EndTry3:
         .FormulaR1C1 = ActiveCell.Value * packSize
         .Copy
         .PasteSpecial Paste:=xlPasteValues
+    End With
+    
+' Change fill color to fillChoice color and bold text
+    ActiveCell.Offset(-2, -5).Select
+    Selection.Resize(Selection.Rows.Count + 2, _
+        Selection.Columns.Count + 1).Select
+    With Selection
+        .Font.Bold = True
+        .Interior.Color = fillChoice
+    End With
+
+' Move down one row, extend range, change to fillChoice color
+    Selection.Offset(3, 0).Resize(Selection.Rows.Count - 2, _
+        Selection.Columns.Count + 3).Select
+    Selection.Interior.Color = fillChoice
+    
+' Enter N/A into Printed cell
+    Selection.Offset(0, -1).Resize(Selection.Rows.Count, _
+        Selection.Columns.Count - 4).Select
+    With Selection
+        With .Font
+            .Bold = True
+            .Size = 13.5
+        End With
+        .Interior.Color = RGB(255, 255, 255)
+        .Value = "CL"
+    End With
+
+' Enter CL into Printed cell for kit items
+    Selection.Offset(-3, 0).Resize(Selection.Rows.Count + 2, Selection.Columns.Count).Select
+    With Selection
+        With .Font
+            .Bold = True
+            .Size = 13.5
+        End With
+        .Interior.Color = RGB(255, 255, 255)
+        .Value = "N/A"
     End With
 End Sub

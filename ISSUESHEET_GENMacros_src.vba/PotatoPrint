@@ -16,42 +16,66 @@ End Sub
 
 Sub printWithStaples()
     
-    'Call refreshEmAll  'Refresh schedule
-    'Delay (4)
-    
-    Application.SendKeys "%fp", True 'print then open printer select dropdown
+    Delay (5)
+    'Open print menu then select printer from dropdown
+    Application.SendKeys "%fp", True
     Delay (1)
     Application.SendKeys "i", True
-    Delay (3)
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}", True
-    Application.SendKeys "{DOWN}~", True
-    Delay (3)
-    'select Print Entire Workbook
-    Application.SendKeys "{TAB}", True
-    Application.SendKeys "{TAB}~", True
-    Application.SendKeys "{DOWN}~", True
-    Delay (3)
-    'select One Staple Top Left
-    Application.SendKeys "{TAB}", True
-    Application.SendKeys "{TAB}", True
-    Application.SendKeys "{TAB}", True
-    Application.SendKeys "{TAB}", True
-    Application.SendKeys "{TAB}~", True
-    Application.SendKeys "{DOWN}~", True
+    Delay (1)
+    Application.SendKeys "{DOWN 12}~", True
+    Delay (1)
+    Application.SendKeys "{ESC}", True
+    
+    'run through sheets and change settings
+    Dim incr As Integer
+    For incr = 1 To 3
+        Sheets(incr).Activate
+            Delay (2)
+            'Open print menu
+            Application.SendKeys "%fp", True
+            Delay (2)
+            
+            'Print one-sided
+            Application.SendKeys "%d", True
+            Delay (2)
+            Application.SendKeys "{UP}~", True
+            Delay (2)
+            
+            'Staples in top left corner
+            Application.SendKeys "%fpk", True
+            Application.SendKeys "{DOWN}~", True
+            Delay (2)
+            
+            Application.SendKeys "%pp", True
+            Application.SendKeys "{ESC}", True
+            Delay (2)
+            
+    Next incr
+    'MsgBox "hold up wait"
+    
+    'run through sheets again and print each one
+    incr = 1
+    For incr = 1 To 3
+        Sheets(incr).Activate
+        Application.SendKeys "%fpp", True
+            'MsgBox "yo"
+        'Application.SendKeys "{ESC}", True
+        Delay (3)
 
-    Delay (3)
-    Application.SendKeys "%pp", True
-
+    Next incr
+    
+    'Change printer selection back to the default printer
+    Application.SendKeys "%fp", True
+    Delay (2)
+    Application.SendKeys "i", True
+    Delay (2)
+    Application.SendKeys "{UP 12}~", True
+    Delay (2)
+    Application.SendKeys "{ESC}", True
+    Delay (1)
+    
+    ActiveWorkbook.Close SaveChanges:=True
+    
 End Sub
 
 

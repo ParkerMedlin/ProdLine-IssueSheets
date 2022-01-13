@@ -15,6 +15,7 @@ uInput = MsgBox("Proceed with Refresh?", vbQuestion + vbYesNo)
     
         Else
             MsgBox "Refresh cancelled."
+            Exit Sub
     
     End If
 

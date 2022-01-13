@@ -16,7 +16,26 @@ End Sub
 Sub EoDPrint()
     
     ' Refresh schedule
-    Call RefreshAll
+    Dim uInput As Integer
+    uInput = MsgBox("Proceed with Refresh?", vbQuestion + vbYesNo)
+
+        If uInput = vbYes Then
+            'Application.Calculation = xlCalculationManual
+
+            ActiveWorkbook.Connections("Query - prod_mergeSheets_createTable").Refresh
+            ActiveWorkbook.Connections("Query - blendQty_onHand").Refresh
+            ActiveWorkbook.Connections("Query - TimeTable").Refresh
+            ActiveWorkbook.Connections("Query - issueSheetTableQuery").Refresh
+            ActiveWorkbook.Connections("Query - BlendThese").Refresh
+            
+            'Application.Calculation = xlCalculationAutomatic
+    
+        Else
+            MsgBox "Refresh cancelled."
+            Exit Sub
+    
+        End If
+
     
     Delay (5)
     

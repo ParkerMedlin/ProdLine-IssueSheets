@@ -1,5 +1,8 @@
 # Update Notes 
 
+### 1-13-2022 
+ - FINALLY GOT THE THING TO PRINT MY ISSUE SHEETS TO THE FRONT OFFICE PRINTER WITH STAPLES. Added the macro for this. 
+
 ### 1-3-2022
  - Big ole update drastically decreasing the amount of code needed to generate the issue sheets 
  - Eventual goal is to completely automate the staple printing but for now printing will be manual. 

@@ -85,6 +85,13 @@ Sub createWorkbooks()
    
         'Open the workbook and print it with staples
         Workbooks.Open foldrPath & "\" & betterIssueDate & " Issue Sheets.xlsb"
+        Dim uInput4 As Integer
+        uInput4 = MsgBox("Print Issue Sheets?", vbQuestion + vbYesNo)
+        If uInput4 = vbYes Then
+            Call printWithStaples
+        Else
+            MsgBox "Print cancelled."
+        End If
         
     Else
     
