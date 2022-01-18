@@ -1,5 +1,11 @@
 # Update Notes 
 
+### 1-18-2022
+ - cleared out the bom.blend, timetable, and checkoutcounts queries
+ - change name of bom.master to bom.Source and made it more specific, like the one in Blend Schedule 
+ - updated formulae on blendData so they are now keyed to bom.Source
+ - updated refresh macro to just RefreshAll
+
 ### 1-13-2022 
  - FINALLY GOT THE THING TO PRINT MY ISSUE SHEETS TO THE FRONT OFFICE PRINTER WITH STAPLES. Added the macro for this. 
 
