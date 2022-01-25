@@ -150,15 +150,15 @@ Sub IssueSheetGen()
     
         Case "Inline"
             Range("A1:F41").Copy ActiveWorkbook.Sheets(2).Range("A" & pasteRowINLine)
-            pasteRowINLine = pasteRowINLine + 40
+            pasteRowINLine = pasteRowINLine + 39
             
         Case "PDLine"
             Range("A1:F41").Copy ActiveWorkbook.Sheets(3).Range("A" & pasteRowPDLine)
-            pasteRowPDLine = pasteRowPDLine + 40
+            pasteRowPDLine = pasteRowPDLine + 39
             
         Case "JBLine"
             Range("A1:F41").Copy ActiveWorkbook.Sheets(4).Range("A" & pasteRowJBLine)
-            pasteRowJBLine = pasteRowJBLine + 40
+            pasteRowJBLine = pasteRowJBLine + 39
     
     End Select
     

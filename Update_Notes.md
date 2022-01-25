@@ -1,5 +1,8 @@
 # Update Notes 
 
+### 1-25-2022 
+ - Resolved formatting problem with issue sheet; it was skipping too many lines before pasting the next "page" into the document. Just changed increment for `pasteRowXYZLine` variables from 40 to 39 
+
 ### 1-18-2022
  - cleared out the bom.blend, timetable, and checkoutcounts queries
  - change name of bom.master to bom.Source and made it more specific, like the one in Blend Schedule 
