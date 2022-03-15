@@ -1,5 +1,9 @@
 # Update Notes 
 
+### 3-15-2022 
+ - changed logic so it no longer deletes sheet 1 in the destination template
+ - updated path so that createIssueWorkbooks now has its own destination template, resolving issues with hx blends
+
 ### 1-25-2022 
  - Resolved formatting problem with issue sheet; it was skipping too many lines before pasting the next "page" into the document. Just changed increment for `pasteRowXYZLine` variables from 40 to 39 
 
@@ -29,7 +33,7 @@
 
 ### 12-8-2021
  - resolved the "Range method of object _Global has failed" issue. Problem was that I was trying to select a table row using the old table name (I updated the table name yesterday to match naming convention of all other tables).
- - added `if` statement in the ThisWorkbook module of ISSUESHEET_GEN workbook to make sure Open_Workbook() isn't looking for ProdScheduleCopy.xlsb when it's not there. 
+ - a-dded `if` statement in the ThisWorkbook module of ISSUESHEET_GEN workbook to make sure Open_Workbook() isn't looking for ProdScheduleCopy.xlsb when it's not there. -
  - Removed a couple functions from CreateIssueWorkbooks module.
 	 - Sub OpenNOTIssueSht()
 	 - Sub OpenWkbkNames() 
