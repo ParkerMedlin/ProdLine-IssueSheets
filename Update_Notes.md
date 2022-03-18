@@ -1,5 +1,9 @@
 # Update Notes 
 
+### 3-18-2022 
+ - the binary.buffer version of the Append1 query takes 3 minutes to reload (2min55sec), while the original version takes 29 seconds. deleted the version of issuesheetgen wkbk that has binarybuff queries
+ - deleted the batch file that was previously used for copying the prod schedule
+
 ### 3-15-2022 
  - changed logic so it no longer deletes sheet 1 in the destination template
  - updated path so that createIssueWorkbooks now has its own destination template, resolving issues with hx blends
